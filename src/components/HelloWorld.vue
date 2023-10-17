@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-appp>
     <v-main>
       <div class="card-container">
@@ -49,17 +49,14 @@
                     <p class="text-h4 text--primary">
                       Origin
                     </p>
-                    <p>This is the expanded content for Card {{ index + 1 }}.</p>
-                    <p>late 16th century (as a noun denoting a place where alms were distributed): from medieval Latin eleemosynarius, from late Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’ </p>
                     <h3>Checklist</h3>
-                      <ul>
-                        <li v-for="(item, index) in checklist" :key="index">
-                          <v-checkbox v-model="item.checked">{{ item.text }}</v-checkbox>
-                        </li>
-                        <li>
-                          <v-btn @click="addItem">+</v-btn>
-                        </li>
-                      </ul>
+                    <div v-for="(item, index) in checklist" :key="index" style="display: flex; align-items: center;">
+                      <v-checkbox v-model="item.checked"></v-checkbox>
+                      {{ item.text }}
+                    </div>
+                  <div>
+                    <input v-model="newItem" @keydown.enter="addItem" placeholder="Add a new item">
+                  </div>
                   </div>
                 </v-card-text>
                 <v-card-actions class="pt-0">
@@ -93,7 +90,7 @@ export default {
       reveals: [],
       progressValue: 90,
       checklist: [],
-      // newItem: '',
+      newItem: '',
     };
   },
   methods: {
@@ -106,11 +103,89 @@ export default {
       this.$set(this.reveals, index, !this.reveals[index]);
     },
     addItem() {
-      this.checklist.push({ text: '', checked: false });
+      if (this.newItem.trim() !== '') {
+        this.checklist.push({ text: this.newItem, checked: false });
+        this.newItem = '';
+      }
     },
   },
   components: {
     ProgressRing,
+  },
+};
+</script>
+<style>
+.v-card--reveal {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+}
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.card {
+  margin: 10px;
+}
+
+.scrollable-card {
+  max-height: 200px; /* Adjust the max height as needed */
+  overflow-y: auto;
+}
+
+.button-and-progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+</style> -->
+
+<template>
+  <v-appp>
+    <v-main>
+      <div class="card-container">
+        <div
+          v-for="(card, index) in cards"
+          :key="index"
+          class="card"
+        >
+      <CardComponent />
+        </div>
+      </div>
+    </v-main>
+    <v-btn fab dark fixed bottom right color="primary" @click="addCard">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-appp>
+</template>
+
+<script>
+import CardComponent from './CardComponent.vue';
+export default {
+  data() {
+    return {
+      cards: [],
+      cardCount: 0,
+      // reveals: [],
+      // progressValue: 90,
+      // checklist: [],
+      // newItem: '',
+    };
+  },
+  methods: {
+    addCard() {
+      this.cardCount++;
+      this.cards.push(this.cardCount);
+      // this.reveals.push(false);
+    },
+  },
+  components: {
+    CardComponent,
   },
 };
 </script>
