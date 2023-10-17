@@ -1,58 +1,146 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-appp>
+    <v-main>
+      <div class="card-container">
+        <div
+          v-for="(card, index) in cards"
+          :key="index"
+          class="card"
+        >
+          <v-card class="mx-auto" max-width="344">
+            <v-card-text>
+              <div class="scrollable-card">
+                <div>Card {{ index + 1 }}</div>
+                <p class="text-h4 text--primary">
+                  el·ee·mos·y·nar·y
+                </p>
+                <p>adjective</p>
+                <div class="text--primary">
+                  relating to or dependent on charity; charitable.<br>
+                  "an eleemosynary educational institution."<br>
+                  more text <br>
+                  and more <br>
+                  moreeeeee!!!!!<br>
+                </div>
+              </div>
+            </v-card-text>
+
+            <v-card-actions>
+              <div class="button-and-progress-container">
+              <v-btn
+                text
+                color="teal accent-4"
+                @click="toggleReveal(index)"
+              >
+              {{ reveals[index] ? 'Close' : 'Learn More' }}
+              </v-btn>
+              <ProgressRing :progress="progressValue" />
+            </div>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <v-card
+                v-if="reveals[index]"
+                class="transition-fast-in-fast-out v-card--reveal"
+                style="height: 100%;"
+              >
+                <v-card-text class="pb-0">
+                  <div class="scrollable-card">
+                    <p class="text-h4 text--primary">
+                      Origin
+                    </p>
+                    <p>This is the expanded content for Card {{ index + 1 }}.</p>
+                    <p>late 16th century (as a noun denoting a place where alms were distributed): from medieval Latin eleemosynarius, from late Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’ </p>
+                    <h3>Checklist</h3>
+                      <ul>
+                        <li v-for="(item, index) in checklist" :key="index">
+                          <v-checkbox v-model="item.checked">{{ item.text }}</v-checkbox>
+                        </li>
+                        <li>
+                          <v-btn @click="addItem">+</v-btn>
+                        </li>
+                      </ul>
+                  </div>
+                </v-card-text>
+                <v-card-actions class="pt-0">
+                  <v-btn
+                    text
+                    color="teal accent-4"
+                    @click="toggleReveal(index)"
+                  >
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-expand-transition>
+          </v-card>
+        </div>
+      </div>
+    </v-main>
+    <v-btn fab dark fixed bottom right color="primary" @click="addCard">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-appp>
 </template>
 
 <script>
+import ProgressRing from './ProgressRing.vue';
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      cards: [],
+      cardCount: 0,
+      reveals: [],
+      progressValue: 90,
+      checklist: [],
+      // newItem: '',
+    };
+  },
+  methods: {
+    addCard() {
+      this.cardCount++;
+      this.cards.push(this.cardCount);
+      this.reveals.push(false);
+    },
+    toggleReveal(index) {
+      this.$set(this.reveals, index, !this.reveals[index]);
+    },
+    addItem() {
+      this.checklist.push({ text: '', checked: false });
+    },
+  },
+  components: {
+    ProgressRing,
+  },
+};
 </script>
+<style>
+.v-card--reveal {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+}
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+.card {
+  margin: 10px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.scrollable-card {
+  max-height: 200px; /* Adjust the max height as needed */
+  overflow-y: auto;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.button-and-progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
-a {
-  color: #42b983;
-}
+
 </style>
