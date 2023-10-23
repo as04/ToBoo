@@ -39,11 +39,11 @@
         <v-card-text class="pb-0">
             <div class="scrollable-card">
             <p class="text-h4 text--primary">
-                Origin
+              Checklist
             </p>
             <!-- <p>This is the expanded content for Card {{ index + 1 }}.</p>
             <p>late 16th century (as a noun denoting a place where alms were distributed): from medieval Latin eleemosynarius, from late Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’ </p> -->
-            <h3>Checklist</h3>
+            <!-- <h3>Checklist</h3> -->
             <div v-for="(item, index) in checklist" :key="index" style="display: flex; align-items: center;">
                 <v-checkbox v-model="item.checked"></v-checkbox>
                 {{ item.text }}
@@ -73,10 +73,7 @@ import ProgressRing from './ProgressRing.vue';
 export default {
   data() {
     return {
-      cards: [],
-      cardCount: 0,
       reveals: [],
-      // progressValue: 90,
       checklist: [],
       newItem: '',
     };
@@ -117,12 +114,6 @@ export default {
   position: absolute;
   width: 100%;
 }
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
 .card {
   margin: 10px;
 }
