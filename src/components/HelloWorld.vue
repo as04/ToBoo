@@ -7,7 +7,7 @@
           :key="index"
           class="card"
         >
-      <CardComponent />
+      <CardComponent :index="index"/>
         </div>
       </div>
     </v-main>
@@ -45,7 +45,7 @@ export default {
 }
 
 .card {
-  margin: 10px;
+  margin: 20px;
 }
 
 </style>

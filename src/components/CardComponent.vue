@@ -1,9 +1,17 @@
 <template>
     <v-card class="mx-auto" max-width="344">
+      <v-btn
+      class="edit-button"
+      text
+      color="teal accent-4"
+      @click="isEditing = !isEditing"
+    >
+      {{ isEditing ? 'Save' : 'Edit' }}
+    </v-btn>
     <v-card-text>
         <div class="scrollable-card">
         <div>Card {{ index + 1 }}</div>
-        <p class="text-h4 text--primary">
+        <!-- <p class="text-h4 text--primary">
             el·ee·mos·y·nar·y
         </p>
         <p>adjective</p>
@@ -13,6 +21,14 @@
             more text <br>
             and more <br>
             moreeeeee!!!!!<br>
+        </div> -->
+        <div v-if="!isEditing">
+          <p class="text-h4 text--primary">{{ title }}</p>
+          <div class="text--primary">{{ description }}</div>
+        </div>
+        <div v-else>
+          <v-text-field v-model="title" class="title-input" label="Title"></v-text-field>
+          <v-textarea v-model="description" class="description-input" label="Description"></v-textarea>
         </div>
         </div>
     </v-card-text>
@@ -25,6 +41,14 @@
         @click="toggleReveal(index)"
         >
         {{ reveals[index] ? 'Close' : 'Learn More' }}
+        </v-btn>
+        <CardDialog ref="cardDialog" />
+        <v-btn
+          text
+          color="teal accent-4"
+          @click="openDialog"
+        >
+          Expand
         </v-btn>
         <ProgressRing :progress="calcProgress" />
     </div>
@@ -49,8 +73,8 @@
                 {{ item.text }}
             </div>
             <!-- <v-checkbox label="Checkbox"></v-checkbox> -->
-            <div>
-            <input v-model="newItem" @keydown.enter="addItem" placeholder="Add a new item">
+            <div class="input-container">
+              <input v-model="newItem" @keydown.enter="addItem" placeholder="Add a new item">
             </div>
             </div>
         </v-card-text>
@@ -70,12 +94,16 @@
 
 <script>
 import ProgressRing from './ProgressRing.vue';
+import CardDialog from './CardDialog.vue';
 export default {
   data() {
     return {
       reveals: [],
       checklist: [],
       newItem: '',
+      title: '',
+      description: '',
+      isEditing: false,
     };
   },
   methods: {
@@ -88,9 +116,17 @@ export default {
         this.newItem = '';
       }
     },
+    openDialog() {
+      this.$refs.cardDialog.openDialog({
+      title: this.title,
+      description: this.description,
+      checklist: this.checklist,
+    });
+    },
   },
   components: {
     ProgressRing,
+    CardDialog,
   },
   computed: {
     calcProgress() {
@@ -104,6 +140,9 @@ export default {
       return progress.toFixed(1); // Display one decimal place for values with a decimal part
      }
     },
+  },
+  props: {
+    index: Number,
   },
 };
 </script>
@@ -128,6 +167,16 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+.input-container {
+  margin-left: 20px; /* Adjust the margin to move the input to the right */
+}
+
+.edit-button {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  right: 10px; /* Adjust the right position as needed */
 }
 
 </style>

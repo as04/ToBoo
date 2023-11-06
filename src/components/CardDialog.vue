@@ -1,16 +1,16 @@
-<template>
-    <v-dialog v-model="dialogVisible">
+   <template>
+    <v-dialog v-model="dialog" max-width="50%">
       <v-card>
-        <v-card-title>{{ card.title }}</v-card-title>
+        <v-card-title>
+          <!-- Card content here -->
+          {{ cardData.title }}
+        </v-card-title>
         <v-card-text>
-          <!-- Display the card's description, checklist, or other content here -->
-          <p>{{ card.description }}</p>
-          <ul>
-            <li v-for="item in card.checklist">{{ item.text }}</li>
-          </ul>
+          <!-- Card content here -->
+          {{ cardData.description }}
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeDialog">Close</v-btn>
+          <v-btn color="primary" @click="closeDialog">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -18,20 +18,26 @@
   
   <script>
   export default {
-    props: {
-      card: Object, // Pass the card data as a prop
-    },
+    // props: {
+    //   cardData: Object, // Pass card data to the dialog
+    // },
     data() {
       return {
-        dialogVisible: false,
+        dialog: false,
+      cardData: {
+        title: "",
+        description: "",
+        checklist: [],
+      },
       };
     },
     methods: {
-      openDialog() {
-        this.dialogVisible = true;
+      openDialog(data) {
+        this.dialog = true;
+        this.cardData = data;
       },
       closeDialog() {
-        this.dialogVisible = false;
+        this.dialog = false;
       },
     },
   };
