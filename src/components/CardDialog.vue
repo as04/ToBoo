@@ -3,13 +3,14 @@
       <v-card>
         <v-card-title>
           <!-- Card content here -->
-          {{ cardData.title }}
+          <v-text-field v-model="title" class="title-input" label="Title"></v-text-field>
         </v-card-title>
         <v-card-text>
           <!-- Card content here -->
-          {{ cardData.description }}
+          <v-textarea v-model="description" class="description-input" label="Description"></v-textarea>
         </v-card-text>
         <v-card-actions>
+          <v-btn color="primary" @click="saveChanges">Save</v-btn>
           <v-btn color="primary" @click="closeDialog">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -39,6 +40,14 @@
       closeDialog() {
         this.dialog = false;
       },
+      saveChanges() {
+        // Emit an event to the parent component with updated title and description
+        this.$emit('save-card', {
+            title: this.title,
+            description: this.description,
+        });
+        this.dialog = false; // Close the dialog
+        },
     },
   };
   </script>

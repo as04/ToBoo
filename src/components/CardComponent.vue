@@ -4,9 +4,10 @@
       class="edit-button"
       text
       color="teal accent-4"
-      @click="isEditing = !isEditing"
+      @click="openDialog"
     >
-      {{ isEditing ? 'Save' : 'Edit' }}
+    Edit
+      <!-- {{ isEditing ? 'Save' : 'Edit' }} -->
     </v-btn>
     <v-card-text>
         <div class="scrollable-card">
@@ -22,14 +23,15 @@
             and more <br>
             moreeeeee!!!!!<br>
         </div> -->
-        <div v-if="!isEditing">
+        <!-- <div v-if="!isEditing"> -->
           <p class="text-h4 text--primary">{{ title }}</p>
           <div class="text--primary">{{ description }}</div>
-        </div>
-        <div v-else>
-          <v-text-field v-model="title" class="title-input" label="Title"></v-text-field>
-          <v-textarea v-model="description" class="description-input" label="Description"></v-textarea>
-        </div>
+        <!-- </div> -->
+        <!-- <div v-else> -->
+          <!-- <CardDialog @save-card="updateCard" ref="cardDialog" /> -->
+          <!-- <v-text-field v-model="title" class="title-input" label="Title"></v-text-field>
+          <v-textarea v-model="description" class="description-input" label="Description"></v-textarea> -->
+        <!-- </div> -->
         </div>
     </v-card-text>
 
@@ -42,14 +44,15 @@
         >
         {{ reveals[index] ? 'Close' : 'Learn More' }}
         </v-btn>
-        <CardDialog ref="cardDialog" />
+        <!-- <CardDialog ref="cardDialog" />
         <v-btn
           text
           color="teal accent-4"
           @click="openDialog"
         >
           Expand
-        </v-btn>
+        </v-btn> -->
+        <CardDialog @save-card="updateCard" ref="cardDialog" /> <!-- Include CardDialog here -->
         <ProgressRing :progress="calcProgress" />
     </div>
     </v-card-actions>
@@ -116,13 +119,19 @@ export default {
         this.newItem = '';
       }
     },
-    openDialog() {
-      this.$refs.cardDialog.openDialog({
-      title: this.title,
-      description: this.description,
-      checklist: this.checklist,
+    openDialog(data) {
+    this.$refs.cardDialog.openDialog(data);
+    this.$refs.cardDialog.$on('save-card', (newData) => {
+      this.title = newData.title;
+      this.description = newData.description;
+      // this.checklist = newData.checklist;
     });
-    },
+  },
+    updateCard(newData) {
+        // Update the title and description of the first card (you can modify this logic)
+        this.cards[0].title = newData.title;
+        this.cards[0].description = newData.description;
+      },
   },
   components: {
     ProgressRing,
