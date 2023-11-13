@@ -52,7 +52,7 @@
         >
           Expand
         </v-btn> -->
-        <CardDialog @save-card="updateCard" ref="cardDialog" /> <!-- Include CardDialog here -->
+        <CardDialog :index="index" @save-card="updateCard" ref="cardDialog" /> <!-- Include CardDialog here -->
         <ProgressRing :progress="calcProgress" />
     </div>
     </v-card-actions>
@@ -76,9 +76,9 @@
                 {{ item.text }}
             </div>
             <!-- <v-checkbox label="Checkbox"></v-checkbox> -->
-            <div class="input-container">
+            <!-- <div class="input-container">
               <input v-model="newItem" @keydown.enter="addItem" placeholder="Add a new item">
-            </div>
+            </div> -->
             </div>
         </v-card-text>
         <v-card-actions class="pt-0">
@@ -124,7 +124,7 @@ export default {
     this.$refs.cardDialog.$on('save-card', (newData) => {
       this.title = newData.title;
       this.description = newData.description;
-      // this.checklist = newData.checklist;
+      this.checklist = newData.checklist;
     });
   },
     updateCard(newData) {

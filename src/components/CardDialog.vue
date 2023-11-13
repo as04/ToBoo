@@ -8,6 +8,14 @@
         <v-card-text>
           <!-- Card content here -->
           <v-textarea v-model="description" class="description-input" label="Description"></v-textarea>
+          <div v-for="(item, index) in checklist" :key="index" style="display: flex; align-items: center;">
+                <v-checkbox v-model="item.checked"></v-checkbox>
+                {{ item.text }}
+            </div>
+            <!-- <v-checkbox label="Checkbox"></v-checkbox> -->
+            <div class="input-container">
+              <input v-model="newItem" @keydown.enter="addItem" placeholder="Add a new item">
+            </div>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="saveChanges">Save</v-btn>
@@ -25,11 +33,12 @@
     data() {
       return {
         dialog: false,
-      cardData: {
+    //   cardData: {
         title: "",
         description: "",
         checklist: [],
-      },
+        newItem: '',
+    //   },
       };
     },
     methods: {
@@ -45,10 +54,20 @@
         this.$emit('save-card', {
             title: this.title,
             description: this.description,
+            checklist: this.checklist,
         });
         this.dialog = false; // Close the dialog
         },
+        addItem() {
+      if (this.newItem.trim() !== '') {
+        this.checklist.push({ text: this.newItem, checked: false });
+        this.newItem = '';
+      }
     },
+    },
+    props: {
+    index: Number,
+  },
   };
   </script>
   
