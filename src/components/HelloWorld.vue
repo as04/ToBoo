@@ -45,7 +45,7 @@ export default {
 }
 
 .card {
-  margin: 20px;
+  margin: 10px;
 }
 
 </style>

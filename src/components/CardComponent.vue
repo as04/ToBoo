@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto" max-width="344">
+    <v-card class="mx-auto" max-width="270" style="min-height: 200px; min-width: 270px;">
       <v-btn
       class="edit-button"
       text
@@ -10,7 +10,7 @@
       <!-- {{ isEditing ? 'Save' : 'Edit' }} -->
     </v-btn>
     <v-card-text>
-        <div class="scrollable-card">
+        <div class="scrollable-card" style="min-height: 100px;">
         <div>Card {{ index + 1 }}</div>
         <!-- <p class="text-h4 text--primary">
             el·ee·mos·y·nar·y
